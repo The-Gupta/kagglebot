@@ -25,5 +25,5 @@ ENV PORT=8080
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
     CMD python -c "from agents.orchestrator import orchestrator_agent; print('ok')" || exit 1
 
-# Default command: run ADK web on all interfaces (required for Cloud Run)
-CMD ["adk", "web", "--host", "0.0.0.0", "--port", "8080", "."]
+# Default command: run custom server with chat UI + ADK API
+CMD ["uvicorn", "server:app", "--host", "0.0.0.0", "--port", "8080"]

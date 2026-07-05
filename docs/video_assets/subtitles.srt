@@ -1,0 +1,65 @@
+1
+00:00:00,000 --> 00:00:08,142
+KaggleBot — AI-Powered Kaggle
+Competition Strategy Agent
+
+2
+00:00:09,142 --> 00:00:22,042
+When you join a Kaggle competition,
+you spend 4-8 hours on discovery...
+
+3
+00:00:23,042 --> 00:00:40,212
+5-agent system built with Google ADK
+Orchestrator → Scraper → Data → Strategy → Code
+
+4
+00:00:41,212 --> 00:00:51,822
+🔍 Scraper Agent: Titanic Competition
+Binary Classification | Metric: Accuracy
+
+5
+00:00:52,822 --> 00:01:07,554
+📊 Data Agent: 100 rows × 12 columns
+Quality: 89/100 | Target: Survived
+
+6
+00:01:08,554 --> 00:01:22,612
+📋 Strategy Agent: 3 Ranked Approaches
+⏸️ HITL — User Approves Strategy #1
+
+7
+00:01:23,612 --> 00:01:33,927
+💻 Code Agent: 170 Lines of Secure Python
+🔒 Security Check: safe=True
+
+8
+00:01:34,927 --> 00:01:48,283
+🔒 Three Layers of Security
+Validation + Scanning + AST Analysis
+
+9
+00:01:49,283 --> 00:02:02,924
+📡 Full Pipeline Trace
+5 Agents | 10 Tool Calls | 210ms
+
+10
+00:02:03,924 --> 00:02:21,309
+🧩 11 Concepts Demonstrated
+6 Core + 5 Bonus
+
+11
+00:02:22,309 --> 00:02:30,827
+📊 43 Files | 5,239 Lines | 5 Agents
+8 MCP Tools | 7/7 Tests
+
+12
+00:02:31,827 --> 00:02:42,024
+✅ All 7 E2E Tests Pass
+Three Competitions Verified
+
+13
+00:02:43,024 --> 00:02:58,618
+Built with ❤️ using
+Google ADK + Antigravity IDE
+
