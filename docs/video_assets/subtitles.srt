@@ -1,65 +1,65 @@
 1
-00:00:00,000 --> 00:00:08,142
+00:00:00,000 --> 00:00:10,000
 KaggleBot — AI-Powered Kaggle
 Competition Strategy Agent
 
 2
-00:00:09,142 --> 00:00:22,042
-When you join a Kaggle competition,
-you spend 4-8 hours on discovery...
+00:00:10,000 --> 00:00:25,000
+4-8 hours on competition discovery...
+KaggleBot automates all of that
 
 3
-00:00:23,042 --> 00:00:40,212
+00:00:25,000 --> 00:00:42,000
 5-agent system built with Google ADK
 Orchestrator → Scraper → Data → Strategy → Code
 
 4
-00:00:41,212 --> 00:00:51,822
+00:00:42,000 --> 00:00:54,000
 🔍 Scraper Agent: Titanic Competition
-Binary Classification | Metric: Accuracy
+Metadata + Discussion Insights
 
 5
-00:00:52,822 --> 00:01:07,554
+00:00:54,000 --> 00:01:09,000
 📊 Data Agent: 100 rows × 12 columns
 Quality: 89/100 | Target: Survived
 
 6
-00:01:08,554 --> 00:01:22,612
+00:01:09,000 --> 00:01:24,000
 📋 Strategy Agent: 3 Ranked Approaches
-⏸️ HITL — User Approves Strategy #1
+⏸️ HITL Gate — User Approves #1
 
 7
-00:01:23,612 --> 00:01:33,927
-💻 Code Agent: 170 Lines of Secure Python
-🔒 Security Check: safe=True
+00:01:24,000 --> 00:01:35,000
+💻 Code Agent: 170 Lines of Python
+🔒 Security: safe = True
 
 8
-00:01:34,927 --> 00:01:48,283
+00:01:35,000 --> 00:01:49,000
 🔒 Three Layers of Security
 Validation + Scanning + AST Analysis
 
 9
-00:01:49,283 --> 00:02:02,924
+00:01:49,000 --> 00:02:03,000
 📡 Full Pipeline Trace
 5 Agents | 10 Tool Calls | 210ms
 
 10
-00:02:03,924 --> 00:02:21,309
+00:02:03,000 --> 00:02:18,000
 🧩 11 Concepts Demonstrated
 6 Core + 5 Bonus
 
 11
-00:02:22,309 --> 00:02:30,827
-📊 43 Files | 5,239 Lines | 5 Agents
-8 MCP Tools | 7/7 Tests
+00:02:18,000 --> 00:02:26,000
+📊 43 Files | 5,239 Lines
+5 Agents | 8 MCP Tools | 7/7 Tests
 
 12
-00:02:31,827 --> 00:02:42,024
+00:02:26,000 --> 00:02:35,000
 ✅ All 7 E2E Tests Pass
 Three Competitions Verified
 
 13
-00:02:43,024 --> 00:02:58,618
+00:02:35,000 --> 00:02:49,621
 Built with ❤️ using
 Google ADK + Antigravity IDE
 
