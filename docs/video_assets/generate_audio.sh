@@ -1,47 +1,47 @@
 #!/bin/bash
-# KaggleBot Demo Video - Seamless Audio Generation
-# Generates ONE continuous narration using a single 'say' command
-# for natural prosody and smooth transitions.
+# KaggleBot Demo Video - Seamless Audio (v2)
+# Uses Samantha voice (most natural US English) with Amex Default Prediction
+# Single continuous narration for seamless prosody.
 
-VOICE="Aman"
-RATE=165
+VOICE="Samantha"
+RATE=170
 OUT_DIR="/Users/vishal/Downloads/kagglebot/docs/video_assets"
 FULL_SCRIPT="$OUT_DIR/full_script.txt"
 FULL_AUDIO="$OUT_DIR/full_narration.aiff"
 
 mkdir -p "$OUT_DIR"
 
-echo "Writing full narration script..."
+echo "Writing narration script (Amex Default Prediction)..."
 
 cat > "$FULL_SCRIPT" << 'NARRATION'
-KaggleBot. An AI powered Kaggle Competition Strategy Agent. One command. Full competition analysis with working baseline code.
+KaggleBot. An AI powered Kaggle Competition Strategy Agent. Give it a competition URL, and it delivers a full analysis with working baseline code.
 
-When you join a new Kaggle competition, you spend four to eight hours just on discovery. Reading the overview. Profiling data. Researching discussions. Writing boilerplate code. KaggleBot automates all of that.
+When you join a new Kaggle competition, you spend hours on discovery. Reading the competition overview. Downloading and profiling the dataset. Researching top discussions for insights. Writing boilerplate training code. KaggleBot automates the entire workflow.
 
-It is a 5 agent system built with Google A.D.K. The Orchestrator routes to specialized agents. Scraper reads the competition. Data Agent profiles the dataset. Strategy Agent ranks M.L. approaches and waits for your approval. Then Code Agent generates secure baseline code.
+Here is the architecture. It is a five agent pipeline built with Google A.D.K. The Orchestrator routes your request to four specialized agents. The Scraper Agent researches the competition page and discussions. The Data Agent profiles the dataset and detects quality issues. The Strategy Agent ranks M.L. approaches and presents them for your approval. That is the human in the loop gate. Then the Code Agent generates a secure, runnable baseline script.
 
-Let us analyze the Titanic competition. The Scraper Agent pulls competition metadata. Title, type, evaluation metric, and five discussion insights about feature engineering.
+Let me show you the live deployment. This is the KaggleBot chat UI, running on Google Cloud Run. The interface features a dark IDE-inspired theme with a pipeline sidebar showing all five agents.
 
-The Data Agent profiles the dataset. 100 rows, 12 columns. Quality score 89 out of 100. It detects missing values and ID columns. The target variable Survived has a 61 to 39 percent class balance.
+Let us analyze the American Express Default Prediction competition. I paste the URL and the Scraper Agent starts researching. It extracts the competition title, type, evaluation metric, and pulls insights from top discussions about feature engineering strategies.
 
-Strategy Agent generates three ranked approaches. Number one, Logistic Regression for low effort. Number two, Gradient Boosting. Number three, Stacked Ensemble. This is the Human In The Loop gate. The user approves strategy number one.
+Next, the Data Agent profiles the dataset. It analyzes column types, detects missing values, identifies the target variable, and computes a data quality score. For Amex, it finds a large-scale tabular dataset with financial transaction features.
 
-Code Agent generates 170 lines of runnable Python baseline. Every line is security checked. No dangerous imports. No leaked secrets. Safe equals true.
+The Strategy Agent generates three ranked approaches. Number one, Gradient Boosted Trees with LightGBM. Number two, a deep tabular network. Number three, an ensemble of both. This is the Human in the Loop checkpoint. The user reviews the strategies and approves one before code generation begins.
 
-Three layers of security. Input validation blocks malicious URLs and path traversal. Secret scanner detects and redacts A.P.I. keys. A.S.T. analysis catches dangerous code like subprocess and os dot system.
+The Code Agent generates a complete Python baseline. Notice the syntax highlighted code block with a copy button and a download button. Every line is security checked. No dangerous imports. No leaked API keys. The code is ready to run on Kaggle.
 
-Every pipeline run produces a full trace. You can see each agent, each tool call, timing in milliseconds, and the H.I.T.L. pause. Five agents. Ten tool calls. Total duration, 210 milliseconds.
+KaggleBot has three layers of security built in. Input validation blocks malicious URLs and path traversal. A secret scanner detects and redacts API keys. And A.S.T. analysis catches dangerous code patterns like subprocess calls and os dot system.
 
-KaggleBot demonstrates all 6 official concepts. A.D.K., M.C.P. Servers, Antigravity, Security, Deployability, and Agent Skills. Plus 5 bonus concepts. Observability, Evaluation, Memory, Sessions, and H.I.T.L. That is 11 concepts total.
+Every pipeline run produces a full observability trace. You can see each agent invocation, each tool call, timing in milliseconds, and the H.I.T.L. pause point. Full transparency into the agent pipeline.
 
-43 files. 5239 lines of Python. 5 agents. 8 M.C.P. tools. 7 out of 7 end to end tests passing.
+In total, KaggleBot demonstrates eleven concepts from the Google Gen AI Intensive course. Six official concepts. A.D.K. for multi-agent systems. M.C.P. Servers for tool integration. Antigravity for development. Security with three layers. Deployability on Cloud Run. And Agent Skills for modular capabilities. Plus five bonus concepts. Observability with tracing. Evaluation with L.L.M. as judge. Cross-session memory. Session state management. And human in the loop controls.
 
-All 7 end to end tests pass in under 2 seconds. Three competitions tested. Memory, Observability, Evaluation, and Agent Imports, all verified.
+The project is 43 files, over 5,000 lines of Python, 5 agents, 8 M.C.P. tools, and all 7 end-to-end tests pass.
 
-KaggleBot. Five agents. Three M.C.P. servers. Eleven concepts. 5239 lines of Python. Built with Google A.D.K. and Antigravity IDE. The project is live on Cloud Run and GitHub. Links in the description. Thanks for watching.
+KaggleBot. Five agents. Three M.C.P. servers. Eleven concepts. Built with Google A.D.K. and Antigravity IDE. The live demo and source code are linked in the description. Thanks for watching.
 NARRATION
 
-echo "Generating seamless narration with voice: $VOICE at rate: $RATE..."
+echo "Generating seamless narration with $VOICE at rate $RATE..."
 say -v "$VOICE" -r $RATE -o "$FULL_AUDIO" < "$FULL_SCRIPT"
 
 echo "Done!"
