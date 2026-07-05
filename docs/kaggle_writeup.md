@@ -116,6 +116,7 @@ User: "Analyze the Titanic competition"
 ## Links
 
 - **GitHub**: [github.com/The-Gupta/kagglebot](https://github.com/The-Gupta/kagglebot)
+- **Live Demo (Cloud Run)**: [kagglebot-127175620530.us-central1.run.app](https://kagglebot-127175620530.us-central1.run.app)
 - **YouTube Demo**: [VIDEO_URL]
 - **Kaggle Notebook**: [NOTEBOOK_URL]
 
