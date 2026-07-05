@@ -105,7 +105,7 @@ def _search_competition_discussions(
 # Define the Scraper Agent
 scraper_agent = LlmAgent(
     name="scraper_agent",
-    model="gemini-2.0-flash",
+    model="gemini-2.5-flash",
     instruction="""You are the Competition Research Agent for KaggleBot.
 
 Your role is to research a Kaggle competition by scraping its page and

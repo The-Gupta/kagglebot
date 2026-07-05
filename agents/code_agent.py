@@ -165,7 +165,7 @@ def _save_code_to_file(
 # Define the Code Agent
 code_agent = LlmAgent(
     name="code_agent",
-    model="gemini-2.0-flash",
+    model="gemini-2.5-flash",
     instruction="""You are the Code Generation Agent for KaggleBot.
 
 Your role is to generate a complete, runnable baseline Python script

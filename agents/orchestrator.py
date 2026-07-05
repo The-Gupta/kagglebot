@@ -24,7 +24,7 @@ from skills.memory_skill import recall_learnings, store_learning, get_memory_sta
 # Define the Orchestrator Agent
 orchestrator_agent = LlmAgent(
     name="kagglebot_orchestrator",
-    model="gemini-2.0-flash",
+    model="gemini-2.5-flash",
     instruction="""You are KaggleBot, an AI-powered Kaggle competition analyst.
 
 You help data scientists analyze Kaggle competitions by orchestrating

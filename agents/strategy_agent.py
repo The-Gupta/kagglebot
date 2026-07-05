@@ -168,7 +168,7 @@ def _approve_strategy(
 # Define the Strategy Agent
 strategy_agent = LlmAgent(
     name="strategy_agent",
-    model="gemini-2.0-flash",
+    model="gemini-2.5-flash",
     instruction="""You are the ML Strategy Agent for KaggleBot.
 
 Your role is to generate ranked ML strategy recommendations based on

@@ -122,7 +122,7 @@ _SAMPLE_DATA_DIR = os.path.join(_PROJECT_ROOT, "data")
 # Define the Data Agent
 data_agent = LlmAgent(
     name="data_agent",
-    model="gemini-2.0-flash",
+    model="gemini-2.5-flash",
     instruction=f"""You are the Data Analysis Agent for KaggleBot.
 
 Your role is to profile a dataset and produce a comprehensive analysis
