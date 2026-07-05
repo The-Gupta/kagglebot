@@ -1,507 +1,501 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KaggleBot Demo</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg: #0a0e17;
-            --surface: #131a2b;
-            --surface2: #1a2338;
-            --border: #243049;
-            --text: #e4e8f1;
-            --text-dim: #8892a6;
-            --accent: #4f8cff;
-            --accent2: #7c5cff;
-            --green: #3dd68c;
-            --orange: #ffad33;
-            --red: #ff4d6a;
-            --cyan: #22d3ee;
-        }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: 'Inter', sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            overflow-x: hidden;
-        }
-        .hero {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            background: radial-gradient(ellipse at 50% 0%, rgba(79,140,255,0.12) 0%, transparent 60%),
-                        radial-gradient(ellipse at 80% 80%, rgba(124,92,255,0.08) 0%, transparent 50%);
-            padding: 2rem;
-        }
-        .hero h1 {
-            font-size: 3.5rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #4f8cff, #7c5cff, #22d3ee);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 0.5rem;
-            letter-spacing: -0.02em;
-        }
-        .hero .subtitle {
-            font-size: 1.3rem;
-            color: var(--text-dim);
-            font-weight: 300;
-            margin-bottom: 2rem;
-        }
-        .badge-row {
-            display: flex;
-            gap: 0.75rem;
-            flex-wrap: wrap;
-            justify-content: center;
-            margin-bottom: 2rem;
-        }
-        .badge {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 999px;
-            padding: 0.4rem 1rem;
-            font-size: 0.85rem;
-            font-weight: 500;
-            color: var(--accent);
-        }
-        .badge.green { color: var(--green); }
-        .badge.orange { color: var(--orange); }
-        .badge.cyan { color: var(--cyan); }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KaggleBot Demo Slides</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Inter', sans-serif; background: #0a0e17; color: #e4e8f1; }
+.slide {
+    width: 1920px; height: 1080px;
+    background: #0a0e17; padding: 80px;
+    display: none; position: relative; overflow: hidden;
+}
+.slide.active { display: flex; }
+.slide::before {
+    content: ''; position: absolute; top: -200px; right: -200px;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(79,140,255,0.08) 0%, transparent 70%);
+    border-radius: 50%;
+}
+.slide::after {
+    content: ''; position: absolute; bottom: -150px; left: -150px;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(124,92,255,0.06) 0%, transparent 70%);
+    border-radius: 50%;
+}
 
-        .section {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 3rem 2rem;
-        }
-        .section-title {
-            font-size: 1.8rem;
-            font-weight: 700;
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        .card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-            transition: border-color 0.3s;
-        }
-        .card:hover { border-color: var(--accent); }
-        .card h3 {
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-bottom: 0.75rem;
-            color: var(--accent);
-        }
+/* Slide 1: Hero */
+.hero { flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+.hero-title {
+    font-size: 96px; font-weight: 800; letter-spacing: -2px;
+    background: linear-gradient(135deg, #4f8cff, #7c5cff, #22d3ee);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    margin-bottom: 24px;
+}
+.hero-sub { font-size: 32px; color: #8892a6; font-weight: 400; margin-bottom: 48px; }
+.hero-tagline {
+    font-size: 22px; color: #4f8cff;
+    border: 1px solid rgba(79,140,255,0.3); padding: 14px 36px;
+    border-radius: 999px; background: rgba(79,140,255,0.08);
+}
 
-        /* Architecture diagram */
-        .arch-flow {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-            justify-content: center;
-            margin: 1.5rem 0;
-        }
-        .arch-node {
-            background: var(--surface2);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 0.6rem 1rem;
-            font-weight: 600;
-            font-size: 0.9rem;
-            text-align: center;
-            min-width: 120px;
-        }
-        .arch-node.active { border-color: var(--accent); box-shadow: 0 0 12px rgba(79,140,255,0.2); }
-        .arch-arrow {
-            color: var(--accent);
-            font-size: 1.2rem;
-            font-weight: 700;
-        }
+/* Slide 2: Architecture */
+.arch { flex-direction: column; }
+.arch h2 { font-size: 52px; font-weight: 700; margin-bottom: 50px; }
+.pipeline { display: flex; align-items: center; gap: 20px; justify-content: center; margin: 30px 0; }
+.agent-box {
+    background: #131a2b; border: 1px solid #243049; border-radius: 16px;
+    padding: 30px 28px; text-align: center; width: 200px;
+    position: relative; z-index: 1;
+}
+.agent-box .emoji { font-size: 40px; margin-bottom: 10px; }
+.agent-box .name { font-size: 18px; font-weight: 600; margin-bottom: 4px; }
+.agent-box .desc { font-size: 13px; color: #8892a6; }
+.arrow { font-size: 28px; color: #4f8cff; }
+.mcp-row {
+    display: flex; gap: 24px; justify-content: center; margin-top: 40px;
+}
+.mcp-badge {
+    background: rgba(79,140,255,0.1); border: 1px solid rgba(79,140,255,0.25);
+    padding: 12px 24px; border-radius: 10px; font-size: 15px; color: #4f8cff;
+}
 
-        /* Concepts table */
-        .concepts-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 1rem;
-        }
-        .concept-item {
-            background: var(--surface2);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 1rem;
-            display: flex;
-            align-items: flex-start;
-            gap: 0.75rem;
-        }
-        .concept-num {
-            background: var(--accent);
-            color: #fff;
-            border-radius: 50%;
-            width: 28px;
-            height: 28px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.8rem;
-            font-weight: 700;
-            flex-shrink: 0;
-        }
-        .concept-num.bonus { background: var(--accent2); }
-        .concept-info h4 { font-size: 0.95rem; margin-bottom: 0.25rem; }
-        .concept-info p { font-size: 0.8rem; color: var(--text-dim); }
+/* Generic content slides */
+.content { flex-direction: column; }
+.content h2 { font-size: 52px; font-weight: 700; margin-bottom: 40px; }
+.content h3 { font-size: 28px; font-weight: 600; color: #4f8cff; margin: 20px 0 16px; }
+.content p { font-size: 22px; line-height: 1.7; color: #c0c8d8; max-width: 1400px; }
+.content ul { list-style: none; padding: 0; }
+.content li {
+    font-size: 22px; line-height: 1.7; color: #c0c8d8;
+    padding: 8px 0; padding-left: 32px; position: relative;
+}
+.content li::before {
+    content: '→'; position: absolute; left: 0; color: #4f8cff;
+}
 
-        /* Terminal output */
-        .terminal {
-            background: #0d1117;
-            border: 1px solid #30363d;
-            border-radius: 10px;
-            overflow: hidden;
-            margin: 1rem 0;
-        }
-        .terminal-header {
-            background: #161b22;
-            padding: 0.5rem 1rem;
-            display: flex;
-            gap: 0.4rem;
-            align-items: center;
-        }
-        .terminal-dot { width: 10px; height: 10px; border-radius: 50%; }
-        .terminal-dot.r { background: #ff5f57; }
-        .terminal-dot.y { background: #febc2e; }
-        .terminal-dot.g { background: #28c840; }
-        .terminal-body {
-            padding: 1rem 1.25rem;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.82rem;
-            line-height: 1.6;
-            white-space: pre-wrap;
-            overflow-x: auto;
-        }
-        .t-green { color: #3dd68c; }
-        .t-blue { color: #4f8cff; }
-        .t-yellow { color: #ffad33; }
-        .t-red { color: #ff4d6a; }
-        .t-dim { color: #636e7b; }
-        .t-cyan { color: #22d3ee; }
+/* Cards */
+.card-row { display: flex; gap: 28px; margin: 24px 0; flex-wrap: wrap; }
+.card {
+    background: #131a2b; border: 1px solid #243049;
+    border-radius: 16px; padding: 28px 32px; flex: 1; min-width: 300px;
+}
+.card h4 {
+    font-size: 20px; font-weight: 600; margin-bottom: 12px;
+    display: flex; align-items: center; gap: 10px;
+}
+.card p { font-size: 16px; line-height: 1.6; color: #8892a6; }
+.card .badge {
+    display: inline-block; padding: 4px 12px; border-radius: 6px;
+    font-size: 13px; font-weight: 600; margin-top: 8px;
+}
+.badge-green { background: rgba(61,214,140,0.15); color: #3dd68c; }
+.badge-blue { background: rgba(79,140,255,0.15); color: #4f8cff; }
+.badge-purple { background: rgba(124,92,255,0.15); color: #7c5cff; }
+.badge-orange { background: rgba(255,173,51,0.15); color: #ffad33; }
 
-        /* Stats */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 1rem;
-        }
-        .stat-card {
-            background: var(--surface2);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 1.25rem;
-            text-align: center;
-        }
-        .stat-value {
-            font-size: 2rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, var(--accent), var(--cyan));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .stat-label { font-size: 0.8rem; color: var(--text-dim); margin-top: 0.25rem; }
+/* Strategy cards */
+.strat-card { position: relative; }
+.strat-card .rank {
+    position: absolute; top: -12px; left: 20px;
+    background: #4f8cff; color: white; padding: 4px 16px;
+    border-radius: 6px; font-size: 14px; font-weight: 700;
+}
 
-        /* Footer */
-        .footer {
-            text-align: center;
-            padding: 3rem 2rem;
-            color: var(--text-dim);
-            font-size: 0.9rem;
-        }
-        .footer a { color: var(--accent); text-decoration: none; }
+/* Security layers */
+.security-layer {
+    display: flex; align-items: center; gap: 24px;
+    background: #131a2b; border: 1px solid #243049;
+    border-radius: 14px; padding: 24px 32px; margin: 12px 0;
+}
+.security-layer .icon { font-size: 36px; }
+.security-layer h4 { font-size: 20px; font-weight: 600; margin-bottom: 4px; }
+.security-layer p { font-size: 16px; color: #8892a6; }
+.security-layer .check { color: #3dd68c; font-size: 28px; margin-left: auto; }
 
-        /* Animations */
-        .slide-up {
-            opacity: 0;
-            transform: translateY(30px);
-            animation: slideUp 0.6s ease forwards;
-        }
-        @keyframes slideUp {
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .delay-1 { animation-delay: 0.1s; }
-        .delay-2 { animation-delay: 0.2s; }
-        .delay-3 { animation-delay: 0.3s; }
-        .delay-4 { animation-delay: 0.4s; }
-        .delay-5 { animation-delay: 0.5s; }
-    </style>
+/* Stats grid */
+.stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin: 24px 0; }
+.stat-card {
+    background: #131a2b; border: 1px solid #243049;
+    border-radius: 16px; padding: 32px; text-align: center;
+}
+.stat-num { font-size: 56px; font-weight: 800; color: #4f8cff; }
+.stat-label { font-size: 16px; color: #8892a6; margin-top: 8px; }
+
+/* Concepts grid */
+.concepts-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+.concept-item {
+    background: #131a2b; border: 1px solid #243049;
+    border-radius: 10px; padding: 16px 20px;
+    display: flex; align-items: center; gap: 12px;
+    font-size: 18px;
+}
+.concept-item .num {
+    background: rgba(79,140,255,0.15); color: #4f8cff;
+    width: 32px; height: 32px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 700; flex-shrink: 0;
+}
+.concept-item.bonus { border-color: rgba(124,92,255,0.3); }
+.concept-item.bonus .num { background: rgba(124,92,255,0.15); color: #7c5cff; }
+
+/* Outro */
+.outro { flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+.outro-title {
+    font-size: 72px; font-weight: 800;
+    background: linear-gradient(135deg, #4f8cff, #7c5cff);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    margin-bottom: 40px;
+}
+.outro-stats { display: flex; gap: 32px; margin-bottom: 40px; }
+.outro-stat { font-size: 18px; color: #8892a6; }
+.outro-stat span { color: #4f8cff; font-weight: 600; }
+.outro-links { margin-top: 24px; }
+.outro-link {
+    font-size: 20px; color: #4f8cff; margin: 8px 0;
+    display: block;
+}
+.outro-built { font-size: 18px; color: #8892a6; margin-top: 40px; }
+.outro-thanks { font-size: 28px; margin-top: 32px; color: #c0c8d8; }
+
+/* Code block */
+.code-block {
+    background: #0d1117; border: 1px solid #30363d;
+    border-radius: 12px; padding: 24px 28px; margin: 16px 0;
+    font-family: 'JetBrains Mono', monospace; font-size: 16px;
+    line-height: 1.6; color: #c9d1d9; overflow: hidden;
+}
+.code-block .kw { color: #ff7b72; }
+.code-block .fn { color: #d2a8ff; }
+.code-block .str { color: #a5d6ff; }
+.code-block .cmt { color: #8b949e; }
+.code-block .num { color: #79c0ff; }
+.code-block .var { color: #ffa657; }
+
+/* Slide number */
+.slide-num {
+    position: absolute; bottom: 30px; right: 40px;
+    font-size: 14px; color: #384058; z-index: 2;
+}
+
+/* Nav */
+.nav { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 100;
+    background: #131a2b; border: 1px solid #243049; border-radius: 12px;
+    padding: 10px 20px; display: flex; gap: 12px; }
+.nav button {
+    background: #1a2338; border: 1px solid #243049; color: #e4e8f1;
+    padding: 8px 20px; border-radius: 8px; cursor: pointer; font-family: inherit;
+    font-size: 14px;
+}
+.nav button:hover { border-color: #4f8cff; }
+.nav span { color: #8892a6; font-size: 14px; line-height: 36px; }
+</style>
 </head>
 <body>
 
-<!-- HERO -->
-<div class="hero">
-    <h1 class="slide-up">🤖 KaggleBot</h1>
-    <p class="subtitle slide-up delay-1">AI-Powered Kaggle Competition Strategy Agent</p>
-    <div class="badge-row slide-up delay-2">
-        <span class="badge">Google ADK</span>
-        <span class="badge green">11 Concepts</span>
-        <span class="badge cyan">5 Agents</span>
-        <span class="badge orange">8 MCP Tools</span>
-    </div>
-    <p class="slide-up delay-3" style="color: var(--text-dim); max-width: 600px;">
-        Compress 4–8 hours of Kaggle competition discovery into a 5-minute automated analysis, producing a ranked strategy and baseline code.
+<!-- SLIDE 1: Hero -->
+<div class="slide hero active" id="slide1">
+    <div class="hero-title">🤖 KaggleBot</div>
+    <div class="hero-sub">AI-Powered Kaggle Competition Strategy Agent</div>
+    <div class="hero-tagline">One command → Full competition analysis + working baseline code</div>
+    <div class="slide-num">1 / 13</div>
+</div>
+
+<!-- SLIDE 2: Problem -->
+<div class="slide content" id="slide2">
+    <h2>😩 The Problem</h2>
+    <p style="font-size: 28px; margin-bottom: 40px;">
+        When you join a new Kaggle competition, you spend <strong style="color:#ffad33">4–8 hours</strong> on discovery alone:
     </p>
-</div>
-
-<!-- ARCHITECTURE -->
-<div class="section">
-    <h2 class="section-title">🏗️ Architecture</h2>
-    <div class="arch-flow">
-        <div class="arch-node">👤 User</div>
-        <span class="arch-arrow">→</span>
-        <div class="arch-node active">🎯 Orchestrator</div>
-        <span class="arch-arrow">→</span>
-        <div class="arch-node">🔍 Scraper</div>
-        <span class="arch-arrow">→</span>
-        <div class="arch-node">📊 Data</div>
-        <span class="arch-arrow">→</span>
-        <div class="arch-node">📋 Strategy</div>
-        <span class="arch-arrow">→</span>
-        <div class="arch-node" style="border-color: var(--orange);">⏸️ HITL</div>
-        <span class="arch-arrow">→</span>
-        <div class="arch-node">💻 Code</div>
+    <div class="card-row">
+        <div class="card"><h4>📖 Reading</h4><p>Competition overview, rules, evaluation metric</p></div>
+        <div class="card"><h4>📊 Profiling</h4><p>Download dataset, analyze columns, check for nulls</p></div>
+        <div class="card"><h4>💬 Researching</h4><p>Top discussions, winning approaches, feature tips</p></div>
+        <div class="card"><h4>💻 Coding</h4><p>Write boilerplate training loop, cross-validation, submission</p></div>
     </div>
+    <p style="font-size: 24px; margin-top: 30px; color: #4f8cff;">KaggleBot automates the entire workflow.</p>
+    <div class="slide-num">2 / 13</div>
 </div>
 
-<!-- LIVE DEMO -->
-<div class="section">
-    <h2 class="section-title">🎬 Live Demo — Titanic Competition</h2>
+<!-- SLIDE 3: Architecture -->
+<div class="slide arch" id="slide3">
+    <h2>🏗️ Architecture — 5 Agent Pipeline</h2>
+    <div class="pipeline">
+        <div class="agent-box"><div class="emoji">👤</div><div class="name">User</div><div class="desc">Competition URL</div></div>
+        <div class="arrow">→</div>
+        <div class="agent-box" style="border-color:#4f8cff"><div class="emoji">🎯</div><div class="name">Orchestrator</div><div class="desc">Routes & coordinates</div></div>
+        <div class="arrow">→</div>
+        <div class="agent-box"><div class="emoji">🔍</div><div class="name">Scraper</div><div class="desc">Competition research</div></div>
+        <div class="arrow">→</div>
+        <div class="agent-box"><div class="emoji">📊</div><div class="name">Data Agent</div><div class="desc">Dataset profiling</div></div>
+        <div class="arrow">→</div>
+        <div class="agent-box" style="border-color:#ffad33"><div class="emoji">📋</div><div class="name">Strategy</div><div class="desc">ML ranking + HITL ⏸</div></div>
+        <div class="arrow">→</div>
+        <div class="agent-box"><div class="emoji">💻</div><div class="name">Code Agent</div><div class="desc">Baseline generator</div></div>
+    </div>
+    <div class="mcp-row">
+        <div class="mcp-badge">🔧 Web Scraper MCP Server</div>
+        <div class="mcp-badge">🔧 Data Profiler MCP Server</div>
+        <div class="mcp-badge">🔧 File I/O MCP Server</div>
+    </div>
+    <p style="text-align:center; margin-top:30px; color:#8892a6; font-size:18px;">Built with <strong style="color:#e4e8f1">Google ADK</strong> · Model: <strong style="color:#e4e8f1">Gemini 2.5 Flash</strong></p>
+    <div class="slide-num">3 / 13</div>
+</div>
 
-    <div class="card">
-        <h3>🔍 Step 1: Scraper Agent</h3>
-        <div class="terminal">
-            <div class="terminal-header">
-                <div class="terminal-dot r"></div>
-                <div class="terminal-dot y"></div>
-                <div class="terminal-dot g"></div>
+<!-- SLIDE 4: Live Demo -->
+<div class="slide content" id="slide4">
+    <h2>🚀 Live Deployment — Chat UI</h2>
+    <p style="margin-bottom: 30px;">KaggleBot is deployed on <strong style="color:#4f8cff">Google Cloud Run</strong> with a custom chat interface.</p>
+    <div class="card-row">
+        <div class="card">
+            <h4>🌐 Chat UI</h4>
+            <p style="font-family:'JetBrains Mono'; color:#4f8cff; font-size:18px;">kagglebot-127175620530.us-central1.run.app</p>
+            <p style="margin-top:12px;">Dark-themed chat interface with pipeline sidebar, example prompts, and streaming responses.</p>
+        </div>
+        <div class="card">
+            <h4>📚 API Docs</h4>
+            <p style="font-family:'JetBrains Mono'; color:#4f8cff; font-size:18px;">kagglebot-...run.app/docs</p>
+            <p style="margin-top:12px;">Full Swagger UI with all ADK endpoints — sessions, artifacts, run, and SSE streaming.</p>
+        </div>
+    </div>
+    <div class="card-row">
+        <div class="card">
+            <h4>🐙 GitHub</h4>
+            <p style="font-family:'JetBrains Mono'; color:#4f8cff; font-size:18px;">github.com/The-Gupta/kagglebot</p>
+        </div>
+        <div class="card">
+            <h4>⚡ Health</h4>
+            <p style="font-family:'JetBrains Mono'; color:#3dd68c; font-size:18px;">{"status": "ok"}</p>
+        </div>
+    </div>
+    <div class="slide-num">4 / 13</div>
+</div>
+
+<!-- SLIDE 5: Scraper Agent -->
+<div class="slide content" id="slide5">
+    <h2>🔍 Scraper Agent — Amex Default Prediction</h2>
+    <div class="card-row">
+        <div class="card" style="flex:2">
+            <h4>📝 Competition Metadata</h4>
+            <ul style="list-style:none; padding:0;">
+                <li style="padding:6px 0; color:#c0c8d8;"><strong>Title:</strong> American Express - Default Prediction</li>
+                <li style="padding:6px 0; color:#c0c8d8;"><strong>Type:</strong> Binary Classification</li>
+                <li style="padding:6px 0; color:#c0c8d8;"><strong>Metric:</strong> Custom Amex Metric (M)</li>
+                <li style="padding:6px 0; color:#c0c8d8;"><strong>Goal:</strong> Predict credit card default risk</li>
+            </ul>
+        </div>
+        <div class="card" style="flex:2">
+            <h4>💬 Discussion Insights</h4>
+            <ul style="list-style:none; padding:0;">
+                <li style="padding:6px 0; color:#c0c8d8;">→ Feature aggregation over time windows is key</li>
+                <li style="padding:6px 0; color:#c0c8d8;">→ Time-series patterns in customer behavior</li>
+                <li style="padding:6px 0; color:#c0c8d8;">→ LightGBM dominates top solutions</li>
+                <li style="padding:6px 0; color:#c0c8d8;">→ Feature engineering > model complexity</li>
+            </ul>
+        </div>
+    </div>
+    <div class="slide-num">5 / 13</div>
+</div>
+
+<!-- SLIDE 6: Data Agent -->
+<div class="slide content" id="slide6">
+    <h2>📊 Data Agent — Dataset Profiling</h2>
+    <div class="stats-grid" style="grid-template-columns: repeat(4, 1fr); margin-bottom: 30px;">
+        <div class="stat-card"><div class="stat-num" style="font-size:40px;">5.5M</div><div class="stat-label">Rows</div></div>
+        <div class="stat-card"><div class="stat-num" style="font-size:40px;">190</div><div class="stat-label">Columns</div></div>
+        <div class="stat-card"><div class="stat-num" style="font-size:40px; color:#3dd68c;">78/100</div><div class="stat-label">Quality Score</div></div>
+        <div class="stat-card"><div class="stat-num" style="font-size:40px; color:#ffad33;">target</div><div class="stat-label">Binary (default/paid)</div></div>
+    </div>
+    <div class="card-row">
+        <div class="card"><h4>⚠️ Issues Detected</h4><p>Missing values in financial features (D_, S_, B_ groups). High cardinality in categorical features. ID columns to exclude.</p></div>
+        <div class="card"><h4>📈 Column Types</h4><p>75% Numeric (financial features) · 18% Categorical · 4% Date/Time · 3% ID/Other</p></div>
+    </div>
+    <div class="slide-num">6 / 13</div>
+</div>
+
+<!-- SLIDE 7: Strategy Agent -->
+<div class="slide content" id="slide7">
+    <h2>📋 Strategy Agent — ML Approaches <span class="badge badge-orange">⏸ HITL Gate</span></h2>
+    <div class="card-row" style="margin-top: 30px;">
+        <div class="card strat-card">
+            <div class="rank" style="background:#3dd68c;">#1 Recommended</div>
+            <h4 style="margin-top:16px;">🌲 LightGBM Gradient Boosting</h4>
+            <p>Fast, handles large tabular data. Proven top performer on Kaggle for structured datasets.</p>
+            <span class="badge badge-green">Score: 95</span>
+        </div>
+        <div class="card strat-card">
+            <div class="rank" style="background:#4f8cff;">#2</div>
+            <h4 style="margin-top:16px;">🧠 XGBoost + Feature Engineering</h4>
+            <p>Strong alternative with built-in regularization. Good with custom feature engineering.</p>
+            <span class="badge badge-blue">Score: 85</span>
+        </div>
+        <div class="card strat-card">
+            <div class="rank" style="background:#7c5cff;">#3</div>
+            <h4 style="margin-top:16px;">🔗 Stacked Ensemble</h4>
+            <p>Combine LightGBM + XGBoost + CatBoost. Highest potential, most complex.</p>
+            <span class="badge badge-purple">Score: 78</span>
+        </div>
+    </div>
+    <p style="margin-top:24px; text-align:center; font-size:20px; color:#ffad33;">
+        ⏸ User reviews strategies and approves one before code generation begins
+    </p>
+    <div class="slide-num">7 / 13</div>
+</div>
+
+<!-- SLIDE 8: Code Agent -->
+<div class="slide content" id="slide8">
+    <h2>💻 Code Agent — Baseline Generation</h2>
+    <div class="code-block" style="font-size:15px;">
+<span class="cmt"># KaggleBot Generated Baseline — Amex Default Prediction</span>
+<span class="kw">import</span> pandas <span class="kw">as</span> pd
+<span class="kw">import</span> lightgbm <span class="kw">as</span> lgb
+<span class="kw">from</span> sklearn.model_selection <span class="kw">import</span> <span class="fn">StratifiedKFold</span>
+
+<span class="cmt"># Load data</span>
+train = pd.<span class="fn">read_csv</span>(<span class="str">'train.csv'</span>)
+target = train[<span class="str">'target'</span>]
+
+<span class="cmt"># LightGBM parameters</span>
+params = {<span class="str">'objective'</span>: <span class="str">'binary'</span>, <span class="str">'metric'</span>: <span class="str">'binary_logloss'</span>,
+          <span class="str">'num_leaves'</span>: <span class="num">64</span>, <span class="str">'learning_rate'</span>: <span class="num">0.05</span>}
+
+<span class="cmt"># 5-fold cross-validation</span>
+skf = <span class="fn">StratifiedKFold</span>(n_splits=<span class="num">5</span>, shuffle=<span class="kw">True</span>)
+<span class="kw">for</span> fold, (train_idx, val_idx) <span class="kw">in</span> <span class="fn">enumerate</span>(skf.<span class="fn">split</span>(train, target)):
+    ...
+    </div>
+    <div class="card-row">
+        <div class="card"><h4>✅ Security Check</h4><p style="color:#3dd68c;">SAFE — No dangerous imports, no leaked secrets, no eval/exec</p></div>
+        <div class="card"><h4>📝 Output</h4><p>170 lines of runnable Python with cross-validation, feature engineering, and submission file generation</p></div>
+    </div>
+    <div class="slide-num">8 / 13</div>
+</div>
+
+<!-- SLIDE 9: Security -->
+<div class="slide content" id="slide9">
+    <h2>🔒 3 Layers of Security</h2>
+    <div class="security-layer">
+        <div class="icon">🛡️</div>
+        <div><h4>Layer 1: Input Validation</h4><p>Blocks malicious URLs, path traversal attacks, and injection attempts</p></div>
+        <div class="check">✓</div>
+    </div>
+    <div class="security-layer">
+        <div class="icon">🔐</div>
+        <div><h4>Layer 2: Secret Scanner</h4><p>Detects and redacts API keys, tokens, and credentials in generated code</p></div>
+        <div class="check">✓</div>
+    </div>
+    <div class="security-layer">
+        <div class="icon">🔬</div>
+        <div><h4>Layer 3: AST Code Analysis</h4><p>Catches dangerous patterns: subprocess, os.system, eval, exec, __import__</p></div>
+        <div class="check">✓</div>
+    </div>
+    <div class="slide-num">9 / 13</div>
+</div>
+
+<!-- SLIDE 10: Observability -->
+<div class="slide content" id="slide10">
+    <h2>📡 Observability — Pipeline Tracing</h2>
+    <p style="margin-bottom: 24px;">Every pipeline run produces a full OpenTelemetry-inspired trace:</p>
+    <div style="background:#0d1117; border:1px solid #30363d; border-radius:12px; padding:28px; font-family:'JetBrains Mono'; font-size:15px;">
+        <div style="margin-bottom:12px;color:#8892a6;">TRACE: kagglebot_pipeline_001</div>
+        <div style="margin:8px 0;"><span style="color:#4f8cff;">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span> Orchestrator <span style="color:#8892a6;">0–210ms</span></div>
+        <div style="margin:8px 0 8px 30px;"><span style="color:#3dd68c;">━━━━━━━━━━</span> Scraper Agent <span style="color:#8892a6;">5–45ms</span> <span style="color:#3dd68c;">✓</span></div>
+        <div style="margin:8px 0 8px 30px;"><span style="color:#22d3ee;">━━━━━━━━━━━</span> Data Agent <span style="color:#8892a6;">50–95ms</span> <span style="color:#3dd68c;">✓</span></div>
+        <div style="margin:8px 0 8px 30px;"><span style="color:#ffad33;">━━━━━━━━━━━━━</span> Strategy Agent <span style="color:#8892a6;">100–155ms</span> <span style="color:#ffad33;">⏸ HITL</span></div>
+        <div style="margin:8px 0 8px 30px;"><span style="color:#ff7b72;">━━━━━━━━━━</span> Code Agent <span style="color:#8892a6;">160–205ms</span> <span style="color:#3dd68c;">✓</span></div>
+        <div style="margin-top:16px; color:#8892a6;">5 agents · 10 tool calls · Total: 210ms</div>
+    </div>
+    <div class="slide-num">10 / 13</div>
+</div>
+
+<!-- SLIDE 11: 11 Concepts -->
+<div class="slide content" id="slide11">
+    <h2>🧩 11 Concepts Demonstrated</h2>
+    <div style="display:flex; gap:40px; margin-top:20px;">
+        <div style="flex:1;">
+            <h3 style="margin-bottom:16px;">Core (6)</h3>
+            <div class="concepts-grid" style="grid-template-columns:1fr;">
+                <div class="concept-item"><div class="num">1</div>ADK — 5-agent multi-agent system</div>
+                <div class="concept-item"><div class="num">2</div>MCP Servers — 3 servers, 8 tools</div>
+                <div class="concept-item"><div class="num">3</div>Antigravity — Built entirely in AG IDE</div>
+                <div class="concept-item"><div class="num">4</div>Security — 3-layer protection</div>
+                <div class="concept-item"><div class="num">5</div>Deployability — Docker + Cloud Run</div>
+                <div class="concept-item"><div class="num">6</div>Agent Skills — Modular capabilities</div>
             </div>
-            <div class="terminal-body"><span class="t-blue">Title:</span> Titanic - Machine Learning from Disaster
-<span class="t-blue">Type:</span> Binary Classification
-<span class="t-blue">Metric:</span> Accuracy
-<span class="t-blue">Discussion insights:</span> 5 posts
-  • <span class="t-dim">Top 10% Solution: Feature Engineering Guide</span>
-  • <span class="t-dim">Simple EDA + Feature Engineering + Modeling</span>
-  • <span class="t-dim">Best Score Using Only 3 Features</span>
-  • <span class="t-dim">Common Mistakes and How to Avoid Them</span>
-  • <span class="t-dim">Title Feature Extraction Trick</span></div>
         </div>
-    </div>
-
-    <div class="card">
-        <h3>📊 Step 2: Data Agent — Profile + Quality</h3>
-        <div class="terminal">
-            <div class="terminal-header">
-                <div class="terminal-dot r"></div>
-                <div class="terminal-dot y"></div>
-                <div class="terminal-dot g"></div>
+        <div style="flex:1;">
+            <h3 style="margin-bottom:16px; color:#7c5cff;">Bonus (5)</h3>
+            <div class="concepts-grid" style="grid-template-columns:1fr;">
+                <div class="concept-item bonus"><div class="num">7</div>Observability — Pipeline tracing</div>
+                <div class="concept-item bonus"><div class="num">8</div>Evaluation — LLM-as-Judge rubric</div>
+                <div class="concept-item bonus"><div class="num">9</div>Memory — Cross-session learning</div>
+                <div class="concept-item bonus"><div class="num">10</div>Sessions — State management</div>
+                <div class="concept-item bonus"><div class="num">11</div>HITL — Strategy approval gate</div>
             </div>
-            <div class="terminal-body"><span class="t-blue">Shape:</span> 100 rows × 12 columns
-<span class="t-blue">Quality Score:</span> <span class="t-green">89/100</span>
-<span class="t-blue">Task Type:</span> binary_classification
-
-<span class="t-yellow">⚠️  2 issue(s) detected:</span>
-  • Handle missing values: consider imputation (median/mode)
-  • Drop ID columns before training: ['PassengerId', 'Ticket']
-
-<span class="t-cyan">🎯 Target Variable: Survived</span>
-  Balance: 61.0% / 39.0%
-  Top correlations:
-    Fare: -0.2118 | Parch: -0.1774 | SibSp: 0.1751</div>
         </div>
     </div>
-
-    <div class="card">
-        <h3>📋 Step 3: Strategy Agent — Ranked Approaches</h3>
-        <div class="terminal">
-            <div class="terminal-header">
-                <div class="terminal-dot r"></div>
-                <div class="terminal-dot y"></div>
-                <div class="terminal-dot g"></div>
-            </div>
-            <div class="terminal-body"><span class="t-green">#1: Logistic Regression Baseline</span> (score: 90)
-     Models: LogisticRegression
-     Effort: Low | Risk: Low
-
-<span class="t-blue">#2: Gradient Boosting Baseline</span> (score: 65)
-     Models: LightGBM, XGBoost, CatBoost
-     Effort: Medium | Risk: Low
-
-<span class="t-yellow">#3: Stacked Ensemble</span> (score: 45)
-     Models: LightGBM + XGBoost + RF + LR
-     Effort: High | Risk: Medium
-
-<span class="t-cyan">⏸️ [HITL] User approves Strategy #1 ✅</span></div>
-        </div>
-    </div>
-
-    <div class="card">
-        <h3>💻 Step 4: Code Agent — Secure Baseline</h3>
-        <div class="terminal">
-            <div class="terminal-header">
-                <div class="terminal-dot r"></div>
-                <div class="terminal-dot y"></div>
-                <div class="terminal-dot g"></div>
-            </div>
-            <div class="terminal-body"><span class="t-green">Generated 170 lines of baseline code</span>
-
-<span class="t-dim">"""
-Auto-generated baseline by KaggleBot.
-"""</span>
-<span class="t-blue">import</span> pandas <span class="t-blue">as</span> pd
-<span class="t-blue">import</span> numpy <span class="t-blue">as</span> np
-<span class="t-blue">from</span> sklearn.model_selection <span class="t-blue">import</span> StratifiedKFold
-<span class="t-blue">from</span> sklearn.preprocessing <span class="t-blue">import</span> LabelEncoder
-...
-
-<span class="t-green">🔒 Security Check: safe=True, no_secrets=True ✅</span></div>
-        </div>
-    </div>
+    <div class="slide-num">11 / 13</div>
 </div>
 
-<!-- SECURITY -->
-<div class="section">
-    <h2 class="section-title">🔒 Security Features</h2>
-    <div class="terminal">
-        <div class="terminal-header">
-            <div class="terminal-dot r"></div>
-            <div class="terminal-dot y"></div>
-            <div class="terminal-dot g"></div>
-        </div>
-        <div class="terminal-body"><span class="t-green">✅ Valid URL: https://www.kaggle.com/competitions/titanic</span>
-<span class="t-green">✅ Blocked: https://evil.com/malware → URL must be from kaggle.com</span>
-<span class="t-green">✅ Blocked: ftp://kaggle.com/hack → URL must use http or https</span>
-<span class="t-green">✅ Blocked traversal: Path traversal ('..') not allowed</span>
-
-<span class="t-green">✅ Clean code: safe=True</span>
-<span class="t-red">🚫 Secret detected: api_key = "AIza..." → REDACTED</span>
-
-<span class="t-green">✅ Generated ML code: safe=True (0 issues)</span>
-<span class="t-red">🚫 Dangerous code caught:</span>
-  <span class="t-red">  🚫 Blocked import: 'subprocess'</span>
-  <span class="t-red">  🚫 Blocked function: 'subprocess.run'</span>
-  <span class="t-red">  🚫 Blocked function: 'os.system'</span></div>
-    </div>
-</div>
-
-<!-- OBSERVABILITY -->
-<div class="section">
-    <h2 class="section-title">📡 Observability — Pipeline Trace</h2>
-    <div class="terminal">
-        <div class="terminal-header">
-            <div class="terminal-dot r"></div>
-            <div class="terminal-dot y"></div>
-            <div class="terminal-dot g"></div>
-        </div>
-        <div class="terminal-body"><span class="t-dim">[Trace: titanic-demo]</span>
-
-└── <span class="t-blue">🤖 kagglebot_orchestrator</span> (210ms) <span class="t-green">✅</span>
-    ├── <span class="t-cyan">🔧 recall_learnings</span> (12ms) <span class="t-green">✅</span>
-    ├── <span class="t-blue">🤖 scraper_agent</span> (35ms) <span class="t-green">✅</span>
-    │   ├── <span class="t-cyan">🔧 scrape_competition_page</span> (23ms) <span class="t-green">✅</span>
-    │   └── <span class="t-cyan">🔧 search_discussions</span> (12ms) <span class="t-green">✅</span>
-    ├── <span class="t-blue">🤖 data_agent</span> (50ms) <span class="t-green">✅</span>
-    │   ├── <span class="t-cyan">🔧 load_and_preview</span> (12ms) <span class="t-green">✅</span>
-    │   ├── <span class="t-cyan">🔧 profile_dataset</span> (25ms) <span class="t-green">✅</span>
-    │   └── <span class="t-cyan">🔧 analyze_target_variable</span> (12ms) <span class="t-green">✅</span>
-    ├── <span class="t-blue">🤖 strategy_agent</span> (63ms) <span class="t-green">✅</span>
-    │   ├── <span class="t-cyan">🔧 generate_strategies</span> (12ms) <span class="t-green">✅</span>
-    │   └── <span class="t-yellow">⏸️ user_approval</span> (50ms) <span class="t-green">✅</span>
-    ├── <span class="t-blue">🤖 code_agent</span> (37ms) <span class="t-green">✅</span>
-    │   ├── <span class="t-cyan">🔧 generate_baseline_code</span> (24ms) <span class="t-green">✅</span>
-    │   └── <span class="t-cyan">🔧 security_check</span> (13ms) <span class="t-green">✅</span>
-    └── <span class="t-cyan">🔧 store_learning</span> (12ms) <span class="t-green">✅</span>
-
-<span class="t-dim">══════════════════════════════════════════════════</span>
-  <span class="t-blue">📊 TRACE SUMMARY</span>
-  Agents: <span class="t-green">5</span> | Tool calls: <span class="t-green">10</span> | HITL pauses: <span class="t-yellow">1</span>
-  Duration: <span class="t-green">0.21s</span>
-<span class="t-dim">══════════════════════════════════════════════════</span></div>
-    </div>
-</div>
-
-<!-- CONCEPTS -->
-<div class="section">
-    <h2 class="section-title">🧩 11 Concepts Demonstrated</h2>
-    <div class="concepts-grid">
-        <div class="concept-item"><div class="concept-num">1</div><div class="concept-info"><h4>ADK (Multi-Agent)</h4><p>5-agent pipeline with sequential delegation</p></div></div>
-        <div class="concept-item"><div class="concept-num">2</div><div class="concept-info"><h4>MCP Servers</h4><p>3 servers, 8 tools for scraping, data, file I/O</p></div></div>
-        <div class="concept-item"><div class="concept-num">3</div><div class="concept-info"><h4>Antigravity</h4><p>Entire project built in Antigravity IDE</p></div></div>
-        <div class="concept-item"><div class="concept-num">4</div><div class="concept-info"><h4>Security</h4><p>Input validation, secret scanning, AST safety</p></div></div>
-        <div class="concept-item"><div class="concept-num">5</div><div class="concept-info"><h4>Deployability</h4><p>Dockerfile + Cloud Run + deploy script</p></div></div>
-        <div class="concept-item"><div class="concept-num">6</div><div class="concept-info"><h4>Agent Skills</h4><p>4 modular capability modules</p></div></div>
-        <div class="concept-item"><div class="concept-num bonus">7</div><div class="concept-info"><h4>Observability</h4><p>OpenTelemetry tracing + tree visualization</p></div></div>
-        <div class="concept-item"><div class="concept-num bonus">8</div><div class="concept-info"><h4>Evaluation</h4><p>LLM-as-Judge, 5-criterion rubric</p></div></div>
-        <div class="concept-item"><div class="concept-num bonus">9</div><div class="concept-info"><h4>Memory</h4><p>Cross-session learning, relevance scoring</p></div></div>
-        <div class="concept-item"><div class="concept-num bonus">10</div><div class="concept-info"><h4>Sessions</h4><p>Agent-to-agent state handoff</p></div></div>
-        <div class="concept-item"><div class="concept-num bonus">11</div><div class="concept-info"><h4>HITL</h4><p>Mandatory strategy approval gate</p></div></div>
-    </div>
-</div>
-
-<!-- STATS -->
-<div class="section">
-    <h2 class="section-title">📊 Project Stats</h2>
+<!-- SLIDE 12: Stats -->
+<div class="slide content" id="slide12">
+    <h2>📊 Project Stats</h2>
     <div class="stats-grid">
-        <div class="stat-card"><div class="stat-value">43</div><div class="stat-label">Files (32 Python)</div></div>
-        <div class="stat-card"><div class="stat-value">5,239</div><div class="stat-label">Lines of Code</div></div>
-        <div class="stat-card"><div class="stat-value">5</div><div class="stat-label">Agents</div></div>
-        <div class="stat-card"><div class="stat-value">8</div><div class="stat-label">MCP Tools</div></div>
-        <div class="stat-card"><div class="stat-value">7/7</div><div class="stat-label">E2E Tests</div></div>
-        <div class="stat-card"><div class="stat-value">11</div><div class="stat-label">Concepts</div></div>
+        <div class="stat-card"><div class="stat-num">43</div><div class="stat-label">Files (32 Python)</div></div>
+        <div class="stat-card"><div class="stat-num">5,239</div><div class="stat-label">Lines of Python</div></div>
+        <div class="stat-card"><div class="stat-num">5</div><div class="stat-label">ADK Agents</div></div>
+        <div class="stat-card"><div class="stat-num">8</div><div class="stat-label">MCP Tools</div></div>
+        <div class="stat-card"><div class="stat-num" style="color:#3dd68c;">7/7</div><div class="stat-label">E2E Tests Passing</div></div>
+        <div class="stat-card"><div class="stat-num" style="color:#7c5cff;">11</div><div class="stat-label">Concepts Demonstrated</div></div>
     </div>
+    <div class="slide-num">12 / 13</div>
 </div>
 
-<!-- E2E TESTS -->
-<div class="section">
-    <h2 class="section-title">✅ E2E Test Results</h2>
-    <div class="terminal">
-        <div class="terminal-header">
-            <div class="terminal-dot r"></div>
-            <div class="terminal-dot y"></div>
-            <div class="terminal-dot g"></div>
-        </div>
-        <div class="terminal-body"><span class="t-green">🎉 titanic — ALL TESTS PASSED</span>
-  ✅ Scraper | ✅ Data Load | ✅ Profile | ✅ Target | ✅ Issues
-  ✅ Strategies | ✅ Code (141 lines) | ✅ Security | ✅ Validation
-
-<span class="t-green">🎉 house-prices — ALL TESTS PASSED</span>
-  ✅ Scraper | ✅ Strategies | ✅ Code (147 lines) | ✅ Security
-
-<span class="t-green">🎉 spaceship-titanic — ALL TESTS PASSED</span>
-  ✅ Scraper | ✅ Strategies | ✅ Code (141 lines) | ✅ Security
-
-<span class="t-green">🎉 Memory — ALL TESTS PASSED</span>
-<span class="t-green">🎉 Observability — ALL TESTS PASSED</span>
-<span class="t-green">🎉 Evaluation — ALL TESTS PASSED</span>
-<span class="t-green">🎉 Agent Imports — ALL TESTS PASSED</span>
-
-<span class="t-dim">══════════════════════════════════════════════════</span>
-  <span class="t-green">RESULTS: 7 passed, 0 failed (1.61s)</span>
-<span class="t-dim">══════════════════════════════════════════════════</span></div>
+<!-- SLIDE 13: Outro -->
+<div class="slide outro" id="slide13">
+    <div class="outro-title">🤖 KaggleBot</div>
+    <div class="outro-stats">
+        <div class="outro-stat"><span>5</span> Agents</div>
+        <div class="outro-stat">•</div>
+        <div class="outro-stat"><span>3</span> MCP Servers</div>
+        <div class="outro-stat">•</div>
+        <div class="outro-stat"><span>11</span> Concepts</div>
+        <div class="outro-stat">•</div>
+        <div class="outro-stat"><span>5,239</span> Lines of Python</div>
     </div>
+    <div class="outro-built">Built with <strong style="color:#e4e8f1">Google ADK</strong> + <strong style="color:#e4e8f1">Antigravity IDE</strong></div>
+    <div class="outro-links">
+        <div class="outro-link">🐙 github.com/The-Gupta/kagglebot</div>
+        <div class="outro-link">🌐 kagglebot-127175620530.us-central1.run.app</div>
+    </div>
+    <div class="outro-thanks">Thanks for watching! 🎉</div>
+    <div class="slide-num">13 / 13</div>
 </div>
 
-<!-- FOOTER -->
-<div class="footer">
-    <p>Built with ❤️ using <strong>Google ADK</strong> + <strong>Antigravity IDE</strong></p>
-    <p style="margin-top: 0.5rem;">
-        <a href="https://github.com/The-Gupta/kagglebot">GitHub</a> · Google 5-Day Gen AI Intensive Course Capstone
-    </p>
+<!-- Navigation -->
+<div class="nav">
+    <button onclick="prev()">← Prev</button>
+    <span id="counter">1 / 13</span>
+    <button onclick="next()">Next →</button>
 </div>
 
+<script>
+let current = 1;
+const total = 13;
+function show(n) {
+    document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
+    document.getElementById('slide' + n).classList.add('active');
+    document.getElementById('counter').textContent = n + ' / ' + total;
+}
+function next() { if (current < total) { current++; show(current); } }
+function prev() { if (current > 1) { current--; show(current); } }
+document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === ' ') next();
+    if (e.key === 'ArrowLeft') prev();
+});
+</script>
 </body>
 </html>
