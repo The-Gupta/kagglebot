@@ -1,0 +1,35 @@
+# Environment
+.env
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+*.egg-info/
+dist/
+build/
+
+# Output (keep traces for demo, ignore generated files)
+output/memory_store.json
+output/test_*.md
+output/test_*.json
+*.log
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+.cursor/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Virtual env
+venv/
+.venv/
+env/
+
+# Data (keep sample, ignore large downloads)
+data/*.zip
+data/raw/
