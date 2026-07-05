@@ -42,38 +42,29 @@ def create_video():
     for s in screenshots:
         print(f"  {os.path.basename(s)}")
 
-    # Timing: map each screenshot to narration paragraph breaks
-    # Total audio: ~211s, 13 segments
-    # Script paragraphs map to slides:
-    # 1. Hero (0-8s) - KaggleBot intro hook
-    # 2. Hero (8-22s) - Problem statement
-    # 3. Architecture (22-44s) - 5-agent pipeline description
-    # 4. Chat UI (44-57s) - Live deployment intro
-    # 5. Scraper (57-73s) - Amex scraper demo
-    # 6. Data (73-91s) - Data profiling
-    # 7. Strategy (91-111s) - Strategy ranking + HITL
-    # 8. Code (111-126s) - Code generation + security check
-    # 9. Security (126-143s) - 3 layers of security
-    # 10. Observability (143-157s) - Pipeline trace
-    # 11. Concepts (157-178s) - 11 concepts overview
-    # 12. Stats + Tests (178-193s) - Project stats
-    # 13. Outro (193-end) - Closing
+    # Timing: measured paragraph durations from TTS engine
+    # Each paragraph gap adds ~0.15s of natural silence in continuous audio
+    # Individual paragraph durations (measured):
+    #   1:  9.4s  2: 15.6s  3: 25.7s  4: 11.2s  5: 16.1s  6: 16.5s  7: 18.6s
+    #   8: 15.0s  9: 15.3s 10: 13.1s 11: 31.3s 12:  9.2s 13: 12.4s
+    # Total measured: 209.5s, continuous audio: 211.4s → ~0.15s gap per paragraph
+
+    GAP = 0.15  # inter-paragraph silence in continuous TTS
 
     segment_times = [
-        (0.0,   0),   # 01_hero — intro hook
-        (8.0,   0),   # 01_hero — problem statement
-        (22.0,  1),   # 02_architecture
-        (44.0,  2),   # 03_chatui
-        (57.0,  3),   # 04_scraper
-        (73.0,  4),   # 05_data
-        (91.0,  5),   # 06_strategy
-        (111.0, 6),   # 07_code
-        (126.0, 7),   # 08_security
-        (143.0, 8),   # 09_observability
-        (157.0, 9),   # 10_concepts
-        (178.0, 10),  # 11_stats
-        (188.0, 11),  # 12_tests
-        (198.0, 12),  # 13_outro
+        (  0.00,  0),   # 01_hero (9.4s)
+        (  9.58,  1),   # 02_problem (15.6s)
+        ( 25.33,  2),   # 03_architecture (25.7s)
+        ( 51.18,  3),   # 04_chatui_live (11.2s)
+        ( 62.53,  4),   # 05_scraper (16.1s)
+        ( 78.78,  5),   # 06_data (16.5s)
+        ( 95.43,  6),   # 07_strategy (18.6s)
+        (114.18,  7),   # 08_code (15.0s)
+        (129.38,  8),   # 09_security (15.3s)
+        (144.88,  9),   # 10_observability (13.1s)
+        (158.17, 10),   # 11_concepts (31.3s)
+        (189.62, 11),   # 12_stats (9.2s)
+        (198.97, 12),   # 13_outro (12.4s)
     ]
 
     # Build ffmpeg concat for slideshow
