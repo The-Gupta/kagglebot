@@ -3,6 +3,10 @@
 > A multi-agent system built with Google Agent Development Kit (ADK) that
 > analyzes Kaggle competitions and generates complete baseline code.
 
+[![Live Demo](https://img.shields.io/badge/🚀_Live_Demo-Cloud_Run-blue?style=for-the-badge)](https://kagglebot-127175620530.us-central1.run.app)
+[![API Docs](https://img.shields.io/badge/📚_API_Docs-Swagger-green?style=for-the-badge)](https://kagglebot-127175620530.us-central1.run.app/docs)
+[![YouTube Demo](https://img.shields.io/badge/🎥_YouTube-Demo_Video-red?style=for-the-badge)](#)
+
 Built for the **Google 5-Day Gen AI Intensive Course Capstone** to demonstrate
 mastery of 6 core concepts + 5 bonus differentiators.
 

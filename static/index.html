@@ -393,18 +393,46 @@
 </div>
 
 <script>
-let APP_NAME = 'kagglebot';
+let APP_NAME = null;
 const USER_ID = 'web_user';
-let sessionId = 'session_' + Date.now();
+let sessionId = null;
 let isProcessing = false;
+let appReady = false;
 
-// Auto-detect app name from the API
-fetch('/list-apps').then(r => r.json()).then(apps => {
-    if (Array.isArray(apps) && apps.length > 0) {
-        APP_NAME = apps[0];
-        console.log('Detected app:', APP_NAME);
+// Auto-detect app name and create session
+async function initApp() {
+    try {
+        const res = await fetch('/list-apps');
+        const apps = await res.json();
+        if (Array.isArray(apps) && apps.length > 0) {
+            APP_NAME = apps[0];
+        } else {
+            APP_NAME = 'app';
+        }
+        console.log('App:', APP_NAME);
+
+        // Create a session
+        const sessRes = await fetch(`/apps/${APP_NAME}/users/${USER_ID}/sessions`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({})
+        });
+        if (sessRes.ok) {
+            const sessData = await sessRes.json();
+            sessionId = sessData.id;
+            console.log('Session:', sessionId);
+        } else {
+            sessionId = 'session_' + Date.now();
+        }
+        appReady = true;
+    } catch (e) {
+        console.error('Init failed:', e);
+        APP_NAME = 'app';
+        sessionId = 'session_' + Date.now();
+        appReady = true;
     }
-}).catch(() => {});
+}
+initApp();
 
 function autoResize(el) {
     el.style.height = 'auto';
@@ -441,7 +469,6 @@ function addMessage(sender, text, isStreaming = false) {
 }
 
 function escapeHtml(text) {
-    // Basic formatting: detect code blocks
     text = text.replace(/</g, '&lt;').replace(/>/g, '&gt;');
     text = text.replace(/```([\s\S]*?)```/g, '<pre>$1</pre>');
     text = text.replace(/`([^`]+)`/g, '<code>$1</code>');
@@ -451,6 +478,10 @@ function escapeHtml(text) {
 
 async function sendMessage() {
     if (isProcessing) return;
+    if (!appReady) {
+        alert('KaggleBot is still initializing. Please wait a moment.');
+        return;
+    }
 
     const input = document.getElementById('userInput');
     const text = input.value.trim();
@@ -466,7 +497,7 @@ async function sendMessage() {
     const streamEl = botMsg.querySelector('#streaming');
 
     try {
-        // Use the SSE endpoint for streaming
+        // Try SSE endpoint first
         const response = await fetch('/run_sse', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -483,7 +514,8 @@ async function sendMessage() {
         });
 
         if (!response.ok) {
-            throw new Error(`API error: ${response.status}`);
+            const errBody = await response.text();
+            throw new Error(`${response.status}: ${errBody.substring(0, 200)}`);
         }
 
         // Read SSE stream
